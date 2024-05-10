@@ -3,8 +3,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: argocd-server-ingress
-  namespace: argocd
+  name: casdoor-ingress
+  namespace: casdoor
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
@@ -13,30 +13,30 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - "argocd.calloc.tech"
-      secretName: argocd-server-tls
+        - "casdoor.calloc.tech"
+      secretName: casdoor-server-tls
   rules:
-    - host: argocd.calloc.tech
+    - host: casdoor.calloc.tech
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: argocd-server
+                name: casdoor-casdoor-helm-charts
                 port:
-                  number: 80
+                  number: 8000
 
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: argocd-server-tls
-  namespace: argocd
+  name: casdoor-server-tls
+  namespace: casdoor
 spec:
-  secretName: argocd-server-tls
+  secretName: casdoor-server-tls
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
   dnsNames:
-    - argocd.calloc.tech
+    - casdoor.calloc.tech

@@ -1,0 +1,15 @@
+btc:
+  enabled: false
+doge:
+  enabled: false
+monero:
+  enabled: true
+  fullnode:
+    enabled: true
+    monerod:
+      host: "monerod"
+      port: "1111"
+      user: "monerod"
+      password: "monerod"
+      nodeSelector: {}
+      tolerations: []

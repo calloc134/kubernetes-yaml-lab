@@ -1,0 +1,41 @@
+# Reference: https://argo-cd.readthedocs.io/en/stable/operator-manual/ingress/#kubernetesingress-nginx
+# Reference: https://cert-manager.io/docs/tutorials/acme/nginx-ingress/#step-7---deploy-a-tls-ingress-resource
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: shkeeper-ingress
+  namespace: shkeeper
+  annotations:
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    cert-manager.io/clusterissuer: "letsencrypt-prod"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - "shkeeper.calloc.tech"
+      secretName: shkeeper-server-tls
+  rules:
+    - host: shkeeper.calloc.tech
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: shkeeper
+                port:
+                  name: http
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: shkeeper-server-tls
+  namespace: shkeeper
+spec:
+  secretName: shkeeper-server-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - shkeeper.calloc.tech

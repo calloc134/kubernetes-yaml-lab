@@ -1,0 +1,5 @@
+zitadel:
+  configmapConfig:
+    ExternalSecure: true
+    ExternalDomain: zitadel.calloc.tech
+    ExternalPort: 443

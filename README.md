@@ -106,6 +106,8 @@ DigitalOcean の MarketPlace に存在する ArgoCD はバージョンが古い�
 
 Helm でインストールした。
 
+参考 URL: [https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd](https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd)
+
 ```bash
 helm repo add argo https://argoproj.github.io/argo-helm
 helm install argocd argo/argo-cd -n argocd -f argocd-values.yaml
@@ -129,3 +131,18 @@ kubectl port-forward svc/argocd-server -n argocd 8080:80
 http://localhost:8080 にアクセスできることを確認。
 
 あとは上記の通りの ingress を設定して、SSL/TLS 有効な Ingress を構築する。
+
+## zitadel
+
+Zitadel は、セルフホストできる IDaaS (Identity as a Service) サービスである。
+
+参考 URL: [https://github.com/zitadel/zitadel-charts/blob/main/examples/1-postgres-insecure/README.md](https://github.com/zitadel/zitadel-charts/blob/main/examples/1-postgres-insecure/README.md)
+
+値を指定して、Helm でインストールする。
+
+```bash
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo add zitadel https://charts.zitadel.com
+helm install --wait db bitnami/postgresql --version 12.10.0 --values https://raw.githubusercontent.com/zitadel/zitadel-charts/main/examples/1-postgres-insecure/postgres-values.yaml -n zitadel
+helm install my-zitadel zitadel/zitadel --values https://raw.githubusercontent.com/zitadel/zitadel-charts/main/examples/1-postgres-insecure/zitadel-values.yaml -f zitadel.yaml -n zitadel
+```
